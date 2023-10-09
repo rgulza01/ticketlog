@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
@@ -10,6 +12,13 @@ class User(db.Model):
     LastName = db.Column(db.String(50))
     Email = db.Column(db.String(50), unique=True)
     UserPhoneNumber = db.Column(db.String(20))
+    def set_password(self, password):
+        # Hash the password before storing it in the database
+        self.Password = generate_password_hash(password, method='pbkdf2:sha256')
+
+    def verify_password(self, password):
+        # Check if the provided password matches the stored hashed password
+        return check_password_hash(self.Password, password)
 
 class Vehicle(db.Model):
     VIN = db.Column(db.String(50), primary_key=True)
@@ -26,10 +35,11 @@ class ServiceTicket(db.Model):
     StationID = db.Column(db.Integer, db.ForeignKey('service_station.StationID'))
     VIN = db.Column(db.String(50), db.ForeignKey('vehicle.VIN'))
     Timestamp = db.Column(db.DateTime)
-    TicketLatitude = db.Column(db.Float)
-    TIcketLongitude = db.Column(db.Float)
-    TIcketStatus = db.Column(db.String(20))
-    IssuesDescription = db.Column(db.Text)
+    location_lat = db.Column(db.Float)  # Changed column name from TicketLatitude to location_lat
+    location_long = db.Column(db.Float)  # Changed column name from TIcketLongitude to location_long
+    issue_status = db.Column(db.String(20))  # Renamed to issue_status for consistency
+    issue_type = db.Column(db.String)  # Added new column for issue type
+    issue_description = db.Column(db.Text)  # Renamed to issue_description for consistency
     Address = db.Column(db.Text)
     Warranty = db.Column(db.Boolean)
 

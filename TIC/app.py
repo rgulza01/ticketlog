@@ -1,28 +1,32 @@
+import importlib
+import routes.test_routes
+
+import logging
+from logging.handlers import RotatingFileHandler
 from flask import Flask
 from models import db
+from routes.auth import auth
+from routes.services import services
+from routes.test_routes import test_routes  # Import the new Blueprint
 import os
 
 app = Flask(__name__)
 
-# Configure the SQLAlchemy part of the app instance
+# Configure logging
+handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
+handler.setLevel(logging.INFO)
+app.logger.addHandler(handler)
+
+# Configure SQLAlchemy
 project_dir = os.path.dirname(os.path.abspath(__file__))
 database_file = "sqlite:///{}".format(os.path.join(project_dir, "app.db"))
 app.config["SQLALCHEMY_DATABASE_URI"] = database_file
-
-# Initialize the app with Flask-SQLAlchemy
 db.init_app(app)
 
-# Create the database tables within SQLAlchemy's scope
-with app.app_context():
-    db.create_all()
-
-# Import the routes module, which contains the definitions for your API endpoints
-from routes.auth import auth
+# Register blueprints
 app.register_blueprint(auth, url_prefix='/auth')
+app.register_blueprint(services, url_prefix='/tickets')
+app.register_blueprint(test_routes, url_prefix='/test')  # Register the test_routes Blueprint
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-@app.route('/')
-def home():
-    return 'Welcome to my Flask app!'

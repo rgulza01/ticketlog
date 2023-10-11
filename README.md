@@ -4,7 +4,7 @@
 <img width="1280" alt="image" src="https://github.com/rgulza01/ticketlog/assets/56838325/96180406-9ca6-430c-9204-7d18e479b3cb">
 
 ### Planning user stories:
-<img width="1064" alt="image" src="https://github.com/rgulza01/ticketlog/assets/56838325/a8b7f2cd-01e1-4cb0-8fed-ce79279b5cec">
+<img width="1114" alt="image" src="https://github.com/rgulza01/ticketlog/assets/56838325/157fc616-35e8-4a3b-8325-25849ceb0cf8">
 
 ### Feature branching workflow
 The key aspects of a feature branching workflow:

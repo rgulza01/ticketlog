@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
@@ -30,7 +29,8 @@ class Vehicle(db.Model):
     DateOfPurchase = db.Column(db.DateTime)
 
 class ServiceTicket(db.Model):
-    TicketID = db.Column(db.Integer, primary_key=True)
+    #TicketID = db.Column(db.Integer, primary_key=True)
+    TicketID = db.Column(db.String(36), primary_key=True)
     UserID = db.Column(db.Integer, db.ForeignKey('user.UserID'))
     StationID = db.Column(db.Integer, db.ForeignKey('service_station.StationID'))
     VIN = db.Column(db.String(50), db.ForeignKey('vehicle.VIN'))

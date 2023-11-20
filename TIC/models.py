@@ -29,19 +29,20 @@ class Vehicle(db.Model):
     DateOfPurchase = db.Column(db.DateTime)
 
 class ServiceTicket(db.Model):
-    #TicketID = db.Column(db.Integer, primary_key=True)
     TicketID = db.Column(db.String(36), primary_key=True)
     UserID = db.Column(db.Integer, db.ForeignKey('user.UserID'))
     StationID = db.Column(db.Integer, db.ForeignKey('service_station.StationID'))
     VIN = db.Column(db.String(50), db.ForeignKey('vehicle.VIN'))
     Timestamp = db.Column(db.DateTime)
-    location_lat = db.Column(db.Float)  # Changed column name from TicketLatitude to location_lat
-    location_long = db.Column(db.Float)  # Changed column name from TIcketLongitude to location_long
-    issue_status = db.Column(db.String(20))  # Renamed to issue_status for consistency
-    issue_type = db.Column(db.String)  # Added new column for issue type
-    issue_description = db.Column(db.Text)  # Renamed to issue_description for consistency
+    location_lat = db.Column(db.Float)  
+    location_long = db.Column(db.Float)   
+    issue_status = db.Column(db.String(20))   
+    issue_type = db.Column(db.String)  
+    issue_description = db.Column(db.Text)  
     Address = db.Column(db.Text)
     Warranty = db.Column(db.Boolean)
+    #status = db.Column(db.String(20), nullable=False)  # for TIC-15 and cancellation
+
 
 class ServiceStation(db.Model):
     StationID = db.Column(db.Integer, primary_key=True)

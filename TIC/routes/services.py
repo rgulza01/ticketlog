@@ -124,3 +124,20 @@ def assign_ticket():
         return jsonify({"message": "Ticket assigned successfully", "assigned_ticket_id": ticket.TicketID})
     else:
         return jsonify({"error": "No pending tickets found"}), 404
+    
+@services.route('/complete/<ticket_id>', methods=['POST'])
+def complete_ticket(ticket_id):
+    # Retrieve the ticket from the database based on the provided ticket_id
+    ticket = ServiceTicket.query.get(ticket_id)
+
+    if ticket:
+        # Update the ticket status to "Completed"
+        ticket.status = "Completed"
+
+        # Add any additional details related to the completion if needed
+        # ...
+
+        db.session.commit()
+        return jsonify({"message": "Ticket completed successfully"}), 200
+    else:
+        return jsonify({"error": "Ticket not found"}), 404

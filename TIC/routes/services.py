@@ -101,9 +101,17 @@ def get_ticket_status(ticket_id):
     else:
         return jsonify({"error": "Ticket not found"}), 404
 
-@services.route('/assign/<ticket_id>', methods=['POST'])
-def assign_ticket(ticket_id):
-    ticket = ServiceTicket.query.get(ticket_id)
+@services.route('/assign', methods=['POST'])
+def assign_ticket():
+    # Retrieve the optional ticket_id from the request
+    ticket_id = request.args.get('ticket_id')
+
+    if ticket_id:
+        # If ticket_id is provided, use it to find the ticket
+        ticket = ServiceTicket.query.get(ticket_id)
+    else:
+        # Otherwise, retrieve the oldest pending ticket based on timestamp
+        ticket = ServiceTicket.query.filter_by(status='pending').order_by(ServiceTicket.Timestamp).first()
 
     if ticket:
         # Update the ticket status to "Assigned"
@@ -113,6 +121,6 @@ def assign_ticket(ticket_id):
         # ...
 
         db.session.commit()
-        return jsonify({"message": "Ticket assigned successfully"})
+        return jsonify({"message": "Ticket assigned successfully", "assigned_ticket_id": ticket.TicketID})
     else:
-        return jsonify({"error": "Ticket not found"}), 404
+        return jsonify({"error": "No pending tickets found"}), 404

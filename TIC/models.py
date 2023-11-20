@@ -41,7 +41,7 @@ class ServiceTicket(db.Model):
     issue_description = db.Column(db.Text)  
     Address = db.Column(db.Text)
     Warranty = db.Column(db.Boolean)
-    #status = db.Column(db.String(20), nullable=False)  # for TIC-15 and cancellation
+    status = db.Column(db.String(20), nullable=False, default='pending')
 
 
 class ServiceStation(db.Model):

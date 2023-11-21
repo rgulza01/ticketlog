@@ -1,5 +1,5 @@
 import importlib
-import routes.test_routes
+# import routes.test_routes
 
 import logging
 from logging.handlers import RotatingFileHandler
@@ -7,7 +7,7 @@ from flask import Flask
 from models import db
 from routes.auth import auth
 from routes.services import services
-from routes.test_routes import test_routes  # Import the new Blueprint
+# from routes.test_routes import test_routes  # Import the new Blueprint
 import os
 
 app = Flask(__name__)
@@ -25,8 +25,8 @@ db.init_app(app)
 
 # Register blueprints
 app.register_blueprint(auth, url_prefix='/auth')
-app.register_blueprint(services, url_prefix='/')
-app.register_blueprint(test_routes, url_prefix='/test')  
+app.register_blueprint(services, url_prefix='/tickets')
+# app.register_blueprint(test_routes, url_prefix='/test')  
 
 if __name__ == "__main__":
     app.run(debug=True)

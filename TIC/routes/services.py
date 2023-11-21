@@ -181,12 +181,12 @@ def assign_ticket():
                 nearest = station  
                 min_distance = dist
 
-        if nearest:
-            ticket.assigned_center_id = nearest.StationID
-            db.session.commit()
-            return jsonify({"message": "Ticket assigned successfully", "assigned_ticket_id": ticket.TicketID})
-        else:
-            return jsonify({"error": "No service station found"}), 500
+        ticket.assigned_center_id = nearest.StationID
+        ticket.status = "Assigned"  # Add this line to update the status
+
+        db.session.commit()
+        return jsonify({"message": "Ticket assigned successfully", "assigned_ticket_id": ticket.TicketID, "status": ticket.status})
     else:
         return jsonify({"error": "No pending tickets found"}), 404
+
     

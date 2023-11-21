@@ -1,8 +1,10 @@
 from flask import Blueprint, request, jsonify, current_app
-from models import ServiceTicket, db, User
+from models import ServiceTicket, db, User, ServiceStation
 import uuid
 import smtplib
 from email.mime.text import MIMEText
+import math
+
 
 services = Blueprint('services', __name__)
 
@@ -100,30 +102,6 @@ def get_ticket_status(ticket_id):
         return jsonify({"status": ticket.status}), 200
     else:
         return jsonify({"error": "Ticket not found"}), 404
-
-@services.route('/assign', methods=['POST'])
-def assign_ticket():
-    # Retrieve the optional ticket_id from the request
-    ticket_id = request.args.get('ticket_id')
-
-    if ticket_id:
-        # If ticket_id is provided, use it to find the ticket
-        ticket = ServiceTicket.query.get(ticket_id)
-    else:
-        # Otherwise, retrieve the oldest pending ticket based on timestamp
-        ticket = ServiceTicket.query.filter_by(status='pending').order_by(ServiceTicket.Timestamp).first()
-
-    if ticket:
-        # Update the ticket status to "Assigned"
-        ticket.status = "Assigned"
-
-        # Here I can also notify the technician of the new ticket
-        # ...
-
-        db.session.commit()
-        return jsonify({"message": "Ticket assigned successfully", "assigned_ticket_id": ticket.TicketID})
-    else:
-        return jsonify({"error": "No pending tickets found"}), 404
     
 @services.route('/complete/<ticket_id>', methods=['POST'])
 def complete_ticket(ticket_id):
@@ -141,3 +119,55 @@ def complete_ticket(ticket_id):
         return jsonify({"message": "Ticket completed successfully"}), 200
     else:
         return jsonify({"error": "Ticket not found"}), 404
+    
+# ------------------------ Helper functions ------------------------   
+
+def find_nearby_stations(lat, lng):
+    stations = ServiceStation.query.filter(
+        db.and_(
+            ServiceStation.StationLatitude.between(lat - 0.5, lat + 0.5),
+            ServiceStation.StationLongitude.between(lng - 0.5, lng + 0.5)
+        )
+    ).all()
+    return stations
+
+def calculate_distance(lat1, lon1, lat2, lon2):
+    # Haversine formula
+    R = 6371  # Earth radius in kilometers
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2) * math.sin(dlat / 2) + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) * math.sin(dlon / 2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    distance = R * c
+    return distance
+# ------------------------ End helper functions ------------------------   
+
+@services.route('/assign', methods=['POST'])
+def assign_ticket():
+    ticket_id = request.args.get('ticket_id')
+
+    if ticket_id:
+        ticket = ServiceTicket.query.get(ticket_id)
+    else:
+        ticket = ServiceTicket.query.filter_by(status='pending').order_by(ServiceTicket.Timestamp).first()
+
+    if ticket:
+        stations = find_nearby_stations(ticket.location_lat, ticket.location_long)
+        nearest = None
+        min_distance = float("inf")
+
+        for station in stations:
+            dist = calculate_distance(station.StationLatitude, station.StationLongitude, ticket.location_lat, ticket.location_long)
+            if dist < min_distance:  
+                nearest = station  
+                min_distance = dist
+
+        if nearest:
+            ticket.assigned_center_id = nearest.StationID
+            db.session.commit()
+            return jsonify({"message": "Ticket assigned successfully", "assigned_ticket_id": ticket.TicketID})
+        else:
+            return jsonify({"error": "No service station found"}), 500
+    else:
+        return jsonify({"error": "No pending tickets found"}), 404
+    

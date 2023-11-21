@@ -42,6 +42,7 @@ class ServiceTicket(db.Model):
     Address = db.Column(db.Text)
     Warranty = db.Column(db.Boolean)
     status = db.Column(db.String(20), nullable=False, default='pending')
+    assigned_center_id = db.Column(db.Integer, db.ForeignKey('service_station.StationID'))
 
 
 class ServiceStation(db.Model):

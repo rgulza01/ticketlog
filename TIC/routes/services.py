@@ -120,6 +120,25 @@ def complete_ticket(ticket_id):
     else:
         return jsonify({"error": "Ticket not found"}), 404
     
+
+@services.route('/createstation', methods=['POST'])
+def create_station():
+    data = request.get_json()
+
+    # Assuming you have the necessary fields in the request data
+    new_station = ServiceStation(
+        StationLatitude=data['latitude'],
+        StationLongitude=data['longitude'],
+        StationAddress=data['address'],
+        StationName=data['name'],
+        StationPhoneNumber=data['phone']
+    )
+
+    db.session.add(new_station)
+    db.session.commit()
+
+    return jsonify({'message': 'New station created successfully!', 'station_id': new_station.StationID}), 201
+
 # ------------------------ Helper functions ------------------------   
 
 def find_nearby_stations(lat, lng):

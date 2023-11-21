@@ -25,7 +25,7 @@ db.init_app(app)
 
 # Register blueprints
 app.register_blueprint(auth, url_prefix='/auth')
-app.register_blueprint(services, url_prefix='/tickets')
+app.register_blueprint(services, url_prefix='/')
 app.register_blueprint(test_routes, url_prefix='/test')  
 
 if __name__ == "__main__":

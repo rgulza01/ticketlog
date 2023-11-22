@@ -1,0 +1,71 @@
+Exception on /auth/register [POST]
+Traceback (most recent call last):
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1965, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 921, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.IntegrityError: UNIQUE constraint failed: user.Username
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/routes/auth.py", line 13, in register
+    db.session.commit()
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/scoping.py", line 554, in commit
+    return self._proxied.commit()
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1923, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1239, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1214, in _prepare_impl
+    self.session.flush()
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 4179, in flush
+    self._flush(objects)
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 4315, in _flush
+    transaction.rollback(_capture_exception=True)
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 4275, in _flush
+    flush_context.execute()
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/orm/persistence.py", line 1226, in _emit_insert_statements
+    result = connection.execute(
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1412, in execute
+    return meth(
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 516, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1635, in _execute_clauseelement
+    ret = self._execute_context(
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1844, in _execute_context
+    return self._exec_single_context(
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1984, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 2339, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1965, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/radiagulzan/Downloads/ticketlogging/ticketlog/TIC/new_env/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 921, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: user.Username
+[SQL: INSERT INTO user ("Username", "Password", "FirstName", "LastName", "Email", "UserPhoneNumber") VALUES (?, ?, ?, ?, ?, ?)]
+[parameters: ('testuser2', 'pbkdf2:sha256:600000$EP6h8pofniOxUq6H$899f6144e18e24ce48209167114715ee2db49df4b63e11e2353db733ce67820b', None, None, None, None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)

@@ -12,8 +12,6 @@ The key aspects of a feature branching workflow:
 - Each new user story/feature is implemented on its own feature branch, branched off of the main development branch.
 - Feature branches are usually named after the feature identifier or user story number, e.g. feature/breakdown-ticket.
 - Once the feature is complete on the branch, it is merged back into the main development branch for integration testing.
-- The main development branch (often called 'develop') contains all completed features integrated together.
 - After sufficient testing on the development branch, it is merged into the production ('main') branch and deployed.
 - This keeps development isolated on branches and main branches stable.
-- The relatively short-lived feature branches help minimize merge conflicts.
-- Well suited for continuous integration and deployment environments.
+I have isolated the changes by creating multiple feature branches (feature/assign-ticket, feature/breakdown-ticket, feature/check-ticket-status, feature/close-ticket, feature/service-station, feature/ticket-cancellation, feature/ticket-confirmation) and a tests branch. I’ve tested my changes in the tests branch and then merged them into main while keeping the README.md in main unchanged.

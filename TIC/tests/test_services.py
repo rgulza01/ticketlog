@@ -9,7 +9,7 @@ sys.path.append(parent_dir)
 
 # Now imports will work
 from app import app  
-from models import User, ServiceTicket, db
+from models import User, ServiceTicket, db, ServiceStation
 
 class TestServices(unittest.TestCase):
 
@@ -19,28 +19,39 @@ class TestServices(unittest.TestCase):
         self.app_context = app.app_context()
         self.app_context.push()
 
-    def test_create_ticket(self):
+    def test_ticket_lifecycle(self):
         # Test that a new ticket can be created
-        response = self.app.post('/tickets/createissue', json={'UserID': 1, 'lat': 41.8781, 'long': -87.6298, 'issueType': 'Flat tire', 'description': 'Need help'})
+        response = self.app.post('/tickets/createissue', json={'UserID': 1, 'lat': 41.8781, 'long': -87.6298, 'issueType': 'Test tire', 'description': 'Need help'})
         self.assertEqual(response.status_code, 201)
         data = response.get_json()
-        ticket = ServiceTicket.query.get(data['ticket_id'])
+        ticket_id = data['ticket_id']
+        ticket = ServiceTicket.query.get(ticket_id)
         self.assertIsNotNone(ticket)
 
-    def test_confirm_ticket(self):
-        # Test that a ticket can be confirmed
-        response = self.app.post('/tickets/<ticket_id>/confirm')
+        # Test that the created ticket can be cancelled
+        response = self.app.delete(f'/tickets/{ticket_id}')
         self.assertEqual(response.status_code, 200)
 
-    def test_cancel_ticket(self):
-        # Test that a ticket can be cancelled
-        response = self.app.delete('/tickets/<ticket_id>')
-        self.assertEqual(response.status_code, 200)
-
-    def test_get_ticket_status(self):
         # Test that a ticket status can be retrieved
-        response = self.app.get('/tickets/<ticket_id>/status')
+        response = self.app.get(f'/tickets/{ticket_id}/status')
         self.assertEqual(response.status_code, 200)
+
+        # Test that a ticket can be completed
+        response = self.app.post(f'/tickets/complete/{ticket_id}')
+        self.assertEqual(response.status_code, 200)
+
+        # Test that a ticket can be assigned
+        response = self.app.post(f'/tickets/assign?ticket_id={ticket_id}')
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_station(self):
+        # Test that a new station can be created
+        response = self.app.post('/tickets/createstation', json={'latitude': 41.8781, 'longitude': -87.6298, 'address': 'Test address', 'name': 'Test name', 'phone': '1234567890'})
+        self.assertEqual(response.status_code, 201)
+        data = response.get_json()
+        station_id = data['station_id']
+        station = ServiceStation.query.get(station_id)
+        self.assertIsNotNone(station)
 
     def tearDown(self):
         # Ensure that the ticket created in `test_create_ticket` is removed from the database

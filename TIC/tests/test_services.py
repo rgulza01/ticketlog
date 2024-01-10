@@ -46,7 +46,7 @@ class TestServices(unittest.TestCase):
 
     def test_create_station(self):
         # Test that a new station can be created
-        response = self.app.post('/tickets/createstation', json={'latitude': 41.8781, 'longitude': -87.6298, 'address': 'Test address', 'name': 'Test name', 'phone': '1234567890'})
+        response = self.app.post('/tickets/createstation', json={'latitude': 56.8561, 'longitude': -75.8697, 'address': 'Some address', 'name': 'Station name', 'phone': '1234567890'})
         self.assertEqual(response.status_code, 201)
         data = response.get_json()
         station_id = data['station_id']
@@ -54,11 +54,18 @@ class TestServices(unittest.TestCase):
         self.assertIsNotNone(station)
 
     def tearDown(self):
-        # Ensure that the ticket created in `test_create_ticket` is removed from the database
-        ticket = ServiceTicket.query.filter_by(UserID=1).first()
-        if ticket:
-            self.db.session.delete(ticket)
-            self.db.session.commit()
+        # # Ensure that the ticket created in `test_create_ticket` is removed from the database
+        # ticket = ServiceTicket.query.filter_by(UserID=1).first()
+        # if ticket:
+        #     self.db.session.delete(ticket)
+        #     self.db.session.commit()
+
+        #  # Ensure that the station created in `test_create_station` is removed from the database
+        # station = ServiceStation.query.filter_by(StationName='Station name').first()
+        # if station:
+        #     self.db.session.delete(station)
+        #     self.db.session.commit()
+
         self.app_context.pop()
 
 if __name__ == '__main__':

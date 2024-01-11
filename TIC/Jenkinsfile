@@ -1,40 +1,11 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = 'radiagulzan/ticketlogging:latest'
-    }
-
     stages {
-        stage('Checkout') {
+        stage('Hello') {
             steps {
-                checkout scm
+                echo 'Hello from Jenkins!'
             }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build DOCKER_IMAGE
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_credentials') {
-                        docker.image(DOCKER_IMAGE).push()
-                    }
-                }
-            }
-        }
-
-    }
-
-    post {
-        always {
-            // Clean up, remove Docker images, etc.
         }
     }
 }

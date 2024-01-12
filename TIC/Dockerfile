@@ -5,7 +5,7 @@ FROM python:latest
 WORKDIR /app
 
 # Copy python requirements file to install dependencies
-COPY requirements.txt ./
+COPY TIC/requirements.txt ./
 
 # Install dependencies
 RUN pip3 install -r requirements.txt

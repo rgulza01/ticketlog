@@ -1,14 +1,30 @@
-pipeline{
-  agent any
-  stages{
-    stage('setup'){
-      steps{
-        sh "sudo apt install python3-venv -y"
-        sh "sudo apt install python3-pip -y"
-        sh "python3 -m venv venv"
-        sh ". venv/bin/activate"
-        sh "pip3 install -r requirements.txt"
+pipeline {
+
+  agent any 
+
+  stages {
+
+    stage('Build') {
+      steps {
+        // Checkout code from Git repo
+        checkout scm  
+
+        // Build Docker image
+        sh "docker build -t radiagulzan/ticketlogging:latest ."
       }
     }
+
+    stage('Deploy') {
+       steps {
+         // Stop any existing container
+        
+        sh "docker ps -q --filter 'name=ticketlogging-container' | grep -q . && docker stop ticketlogging-container"
+        
+         // Run Docker image
+        sh "docker run --name ticketlogging-container -d radiagulzan/ticketlogging:latest"
+       }
+    }
+
   }
+
 }

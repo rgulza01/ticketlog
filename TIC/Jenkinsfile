@@ -19,12 +19,9 @@ pipeline {
 
     stage('Deploy') {
        steps {
-         // Stop any existing container
         
-        sh "docker ps -q --filter 'name=ticketlogging-container' | grep -q . && docker stop ticketlogging-container"
-        
-         // Run Docker image
-        sh "docker run --name ticketlogging-container -d radiagulzan/ticketlogging:latest"
+        sh 'docker run -p 5000:5000 --name ticketlogging-container radiagulzan/ticketlogging:latest'
+
        }
     }
 

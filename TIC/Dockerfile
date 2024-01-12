@@ -17,4 +17,4 @@ COPY TIC .
 EXPOSE 5000 
 
 # Create an entrypoint
-CMD ["python", "app.py", "run", "--host=0.0.0.0", "--port=5000"]
+ENTRYPOINT ["python", "app.py"]

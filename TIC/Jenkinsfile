@@ -24,8 +24,8 @@ pipeline {
 
     stage('Deploy') {
        steps {
-        sh 'docker rm -f ticketlogging-container'
-        sh 'docker run -p 5000:5000 --name ticketlogging-container radiagulzan/ticketlogging:latest &'
+        sh 'docker rm -f new-ticketlogging-container'
+        sh 'docker run -p 5000:5000 --name new-ticketlogging-container radiagulzan/ticketlogging:latest &'
 
        }
     }

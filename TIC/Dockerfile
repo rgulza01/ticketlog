@@ -11,7 +11,7 @@ COPY TIC/requirements.txt ./
 RUN pip3 install -r requirements.txt
 
 # Copy application code to working directory
-COPY . .
+COPY TIC .
 
 # Expose port for Flask app
 EXPOSE 5000 

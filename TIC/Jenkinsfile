@@ -8,12 +8,12 @@ pipeline {
       steps {
         // Checkout code from Git repo
         checkout scm  
-        
+
         // Print current working directory
         sh "pwd"
 
-        // Build Docker image
-        sh "docker build -t radiagulzan/ticketlogging:latest ."
+        // Build Docker image in the TIC directory
+        sh "docker build -t radiagulzan/ticketlogging:latest -f TIC/Dockerfile ."
       }
     }
 

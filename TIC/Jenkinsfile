@@ -17,6 +17,15 @@ pipeline {
       }
     }
 
+    stage('Push') {
+      steps { 
+        withCredentials([usernamePassword(credentialsId: 'e0acc595-e2fd-47d0-8087-0474fc867c85', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+          sh "docker login -u $USER -p $PASS"
+          sh "docker push myimage:latest"
+        }
+      }
+    }
+
     stage('Deploy') {
        steps {
         sh 'docker rm -f new-ticketlogging-container'

@@ -37,7 +37,7 @@ class ServiceTicket(db.Model):
     location_lat = db.Column(db.Float)  
     location_long = db.Column(db.Float)   
     issue_status = db.Column(db.String(20))   
-    issue_type = db.Column(db.String)  
+    issue_type = db.Column(db.String(100))  
     issue_description = db.Column(db.Text)  
     Address = db.Column(db.Text)
     Warranty = db.Column(db.Boolean)
@@ -56,7 +56,7 @@ class ServiceStation(db.Model):
 
 class Agent(db.Model):
     AgentID = db.Column(db.Integer, primary_key=True)
-    TicketID = db.Column(db.Integer, db.ForeignKey('service_ticket.TicketID'))
+    TicketID = db.Column(db.String(36), db.ForeignKey('service_ticket.TicketID'))
     Username = db.Column(db.String(50), unique=True)
     Password = db.Column(db.String(50))
     FirstName = db.Column(db.String(50))

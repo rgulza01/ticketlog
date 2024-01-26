@@ -7,6 +7,6 @@ metadata:
 spec:
   containers:
   - name: ticketlogging-container
-    image: radiagulzan/ticketlogging:ticketlogging-latest-image-tag
+    image: radiagulzan/ticketlogging:latest
     ports:
     - containerPort: 80

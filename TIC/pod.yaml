@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ticketlogging-pod
+  labels:
+    app: ticketlogging-BE
+spec:
+  containers:
+  - name: ticketlogging-container
+    image: radiagulzan/ticketlogging:ticketlogging-latest-image-tag
+    ports:
+    - containerPort: 80
